@@ -28,8 +28,10 @@ async def on_ready():
         if (DEBUG):
             guild = discord.Object(os.getenv("DEBUG_GUILD_ID"))
             await bot.tree.sync(guild=guild)
+            print("Synced commands to debug guild")
         else:
             await bot.tree.sync()
+            print("Synced commands to all guilds")
     except Exception as e:
         print(f"Failed to sync commands: {e}")
 
