@@ -24,11 +24,7 @@ async def load_cogs():
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
     try:
-        guild = discord.Object(id=509471117170442250)
-        bot.tree.copy_global_to(guild=guild)
-        synced = await bot.tree.sync(guild=guild)
-        await bot.tree.sync()  # Sync globally (also causes dupes in LewdLair, but whatever)
-        print(f"Synced {len(synced)} command(s) to guild {guild.id}")
+        await bot.tree.sync()  # global sync
     except Exception as e:
         print(f"Failed to sync commands: {e}")
 
