@@ -3,6 +3,7 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 import asyncio
+DEBUG = False
 
 # Set up intents
 intents = discord.Intents.default()
@@ -24,7 +25,11 @@ async def load_cogs():
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
     try:
-        await bot.tree.sync()  # global sync
+        if (DEBUG):
+            guild = discord.Object(os.getenv("DEBUG_GUILD_ID"))
+            await bot.tree.sync(guild=guild)
+        else:
+            await bot.tree.sync()
     except Exception as e:
         print(f"Failed to sync commands: {e}")
 
