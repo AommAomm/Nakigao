@@ -1,2 +1,0 @@
-URL = "https://discord.com/oauth2/authorize?client_id=CLIENTID&permissions=1759218604441335&scope=bot%20applications.commands"
-DISCORD_TOKEN = "TOKEN"
