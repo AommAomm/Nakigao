@@ -3,7 +3,7 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 import asyncio
-DEBUG = False
+DEBUG = True
 
 # Set up intents
 intents = discord.Intents.default()
