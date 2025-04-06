@@ -46,7 +46,7 @@ class Blackjack(commands.Cog):
         # Create a view with buttons
         class BlackjackView(View):
             def __init__(self):
-                super().__init__(timeout=30)  # Timeout after 30 seconds
+                super().__init__(timeout=30)
                 self.playerHand = playerHand
                 self.dealerHand = dealerHand
                 self.interaction = interaction
