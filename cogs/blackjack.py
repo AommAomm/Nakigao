@@ -45,13 +45,23 @@ class Blackjack(commands.Cog):
 
         # Create a view with buttons
         class BlackjackView(View):
-            def __init__(self):
-                super().__init__(timeout=30)
+            def __init__(self, original_user):
+                super().__init__()
+                self.original_user = original_user  # Store the user who invoked the command
                 self.playerHand = playerHand
                 self.dealerHand = dealerHand
-                self.interaction = interaction
                 self.playervalue = playervalue
                 self.dealervalue = dealervalue
+
+            async def interaction_check(self, interaction: discord.Interaction) -> bool:
+                """Ensure only the original user can interact with the buttons."""
+                if interaction.user != self.original_user:
+                    await interaction.response.send_message(
+                        "You cannot interact with this game. Start your own game with `/blackjack`!", 
+                        ephemeral=True
+                    )
+                    return False
+                return True
 
             @discord.ui.button(label="Hit", style=discord.ButtonStyle.green)
             async def hit(self, interaction: discord.Interaction, button: Button):
@@ -99,7 +109,7 @@ class Blackjack(commands.Cog):
                 self.stop()
 
         # Send initial message with buttons
-        view = BlackjackView()
+        view = BlackjackView(interaction.user)  # Pass the invoking user to the view
         await interaction.response.send_message(
             f"Your hand: {playerHand} (Value: {playervalue})\n"
             f"Dealer's hand: {dealerHand[0]} and ?",
