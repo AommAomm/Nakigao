@@ -10,7 +10,7 @@ class Slots(commands.Cog):
 
     @app_commands.command(name="slots", description="Test your luck!")
     async def slots(self, interaction: discord.Interaction):
-        Symbols = ['🍒', '🍋', '🍊', '🍇', '🔔', '💎', '7️⃣']
+        Symbols = ['<:mc_diamond:1359032213508849734>','<:MC_emerald:1359032215580835905>','<:emoji_7:1228413879386640384>','<:MC_Heart_Full:1359032142176194591>','<:MC_gold_ingot:1359032218252476508>','<:mc_iron:1359032219263307868>']
         slotDisplay = []
         
         def populateSlot():
@@ -38,7 +38,7 @@ class Slots(commands.Cog):
 
         populateSlot()
         await interaction.response.send_message(getDisplay())
-        for i in range(10):
+        for i in range(7):
             populateSlot()
             await interaction.edit_original_response(content=getDisplay())
             await asyncio.sleep(0.25)  # 0.25s delay between edits
