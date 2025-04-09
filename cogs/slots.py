@@ -36,9 +36,9 @@ class Slots(commands.Cog):
             else:
                 return "No win this time."
 
-        populateSlot()
-        await interaction.response.send_message(getDisplay())
-        for i in range(7):
+        populateSlot() # Gets initial slot display
+        await interaction.response.send_message(getDisplay()) # Send initial message with slot display
+        for i in range(7): # Randomize the slots 7 times
             populateSlot()
             await interaction.edit_original_response(content=getDisplay())
             await asyncio.sleep(0.25)  # 0.25s delay between edits

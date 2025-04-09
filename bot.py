@@ -3,7 +3,7 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 import asyncio
-DEBUG = False
+DEBUG = True
 
 # Set up intents
 intents = discord.Intents.default()
@@ -34,13 +34,6 @@ async def on_ready():
             print("Synced commands to all guilds")
     except Exception as e:
         print(f"Failed to sync commands: {e}")
-
-# This reads embeds as message edits, will revisit (maybe)
-#@bot.event
-#async def on_message_edit(before, after):
-#    if before.author == bot.user:
-#        return
-#    await before.reply("Don't edit your messages, coward!")
 
 @bot.event
 async def on_message(message):
