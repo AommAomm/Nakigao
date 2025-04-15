@@ -46,7 +46,7 @@ class Javcheck(commands.Cog):
                 print(f"Initial title: {current_title}")
             elif current_title != self.last_title:
                 user = await self.bot.fetch_user(self.user_id)
-                await user.send(f"Website updated! First video title changed from **{self.last_title}** to **{current_title}**")
+                await user.send(f"New JAV published! Check out **{current_title}** at {self.url}")
                 print(f"Title changed from '{self.last_title}' to '{current_title}'")
                 self.last_title = current_title
             else:
