@@ -27,30 +27,40 @@ class Javcheck(commands.Cog):
             # Parse the HTML
             soup = BeautifulSoup(html_content, 'html.parser')
             
-            # Find the videos div and the first video title
+            # Find the videos div
             videos_div = soup.find('div', class_='videos')
             if not videos_div:
                 print("Videos div not found")
                 return
 
-            first_video = videos_div.find('div', class_='video')
-            if not first_video:
-                print("No video found")
+            # Get all video titles
+            new_videos = []
+            video_elements = videos_div.find_all('div', class_='video')
+            if not video_elements:
+                print("No videos found")
                 return
 
-            current_title = first_video.find('div', class_='title').get_text(strip=True)
-            
-            if self.last_title is None:
-                # First run, just store the title without notifying
-                self.last_title = current_title
-                print(f"Initial title: {current_title}")
-            elif current_title != self.last_title:
-                user = await self.bot.fetch_user(self.user_id)
-                await user.send(f"New JAV published! Check out **{current_title}** at {self.url}")
-                print(f"Title changed from '{self.last_title}' to '{current_title}'")
-                self.last_title = current_title
+            for video in video_elements:
+                title = video.find('div', class_='title').get_text(strip=True)
+                if title == self.last_title:
+                    break  # Stop when we reach the last known title
+                new_videos.append(title)
+
+            if new_videos:
+                if self.last_title is None:
+                    # First run, store the most recent title without notifying
+                    self.last_title = new_videos[0]
+                    print(f"Initial title: {self.last_title}")
+                else:
+                    # Send message with all new videos
+                    user = await self.bot.fetch_user(self.user_id)
+                    message = "New JAVs published!\n" + "\n".join([f"- **{title}**" for title in new_videos])
+                    message += f"\nCheck them out at {self.url}"
+                    await user.send(message)
+                    print(f"New videos found: {new_videos}")
+                    self.last_title = new_videos[0]  # Update to the most recent title
             else:
-                print("No change in title")
+                print("No new videos")
 
         except subprocess.CalledProcessError as e:
             print(f"Error fetching webpage with curl: {e}")
