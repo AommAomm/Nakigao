@@ -44,6 +44,7 @@ class Javcheck(commands.Cog):
                 title = video.find('div', class_='title').get_text(strip=True)
                 if title == self.last_title:
                     break  # Stop when we reach the last known title
+                print(f"Found video: {title}")
                 new_videos.append(title)
 
             if new_videos:
