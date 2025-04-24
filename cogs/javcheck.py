@@ -53,15 +53,26 @@ class Javcheck(commands.Cog):
                     self.last_title = new_videos[0]
                     print(f"Initial title: {self.last_title}")
                 else:
-                    # Send message with all new videos
-                    user = await self.bot.fetch_user(self.user_id)
-                    message = "New JAVs published!\n" + "\n".join([f"- **{title}**" for title in new_videos])
+                    # Construct message
+                    message_lines = [f"- **{title}**" for title in new_videos]
+                    message = "New JAVs published!\n" + "\n".join(message_lines)
                     message += f"\nCheck them out at {self.url}"
-                    await user.send(message)
-                    print(f"New videos found: {new_videos}")
-                    self.last_title = new_videos[0]  # Update to the most recent title
-            else:
-                print("No new videos")
+                    
+                    # Check message length (Discord limit: 2000 characters)
+                    if len(message) > 2000:
+                        print(f"Message too long ({len(message)} characters), truncating...")
+                        # Truncate to first few videos that fit within 2000 chars
+                        message_lines = message_lines[:3]  # Adjust as needed
+                        message = "New JAVs published!\n" + "\n".join(message_lines)
+                        message += f"\n...and more! Check them out at {self.url}"
+                    
+                    if message.strip():  # Ensure message is not empty
+                        user = await self.bot.fetch_user(self.user_id)
+                        await user.send(message)
+                        print(f"New videos found: {new_videos}")
+                        self.last_title = new_videos[0]  # Update to the most recent title
+                    else:
+                        print("Message is empty, skipping send")
 
         except subprocess.CalledProcessError as e:
             print(f"Error fetching webpage with curl: {e}")
